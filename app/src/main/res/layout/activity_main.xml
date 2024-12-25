@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+<EditText android:id="@+id/InputText"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:lines="10"/>
+    <LinearLayout android:id="@+id/butns"
+        android:gravity="center"
+        android:layout_below="@+id/InputText"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button android:id="@+id/TF"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:text=" TF"/>
+        <Button android:id="@+id/Ngrams"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:layout_below="@+id/InputText"
+            android:text="ngrams"/>
+        <Button android:id="@+id/Jaccard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/InputText"
+            android:text=" Jaccard"/>
+    </LinearLayout>
+
+    <TextView android:id="@+id/ResultText"
+        android:layout_width="match_parent"
+        android:layout_below="@id/butns"
+        android:layout_height="wrap_content"/>
+
+</RelativeLayout>
