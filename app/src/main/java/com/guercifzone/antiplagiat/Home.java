@@ -1,82 +1,52 @@
 package com.guercifzone.antiplagiat;
-
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-
-import com.guercifzone.antiplagiat.Api.AiTextDetectionApi;
-import com.guercifzone.antiplagiat.Responce.DetectionResponse;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Home extends AppCompatActivity {
-    private EditText textInput;
-    private Button analyzeButton;
-    private TextView resultText;
-    private Retrofit retrofit;
+/*
+    private static final String TAG = "MainActivity";
+    private static final String BASE_URL = "https://api-inference.huggingface.co/";*/
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.home);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-
-        textInput = findViewById(R.id.textInput);
-        analyzeButton = findViewById(R.id.analyzeButton);
-        resultText = findViewById(R.id.resultText);
-        // Initialize Retrofit
-        retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.fakefinder.ai/")  // Replace with the actual API endpoint
+        setContentView(R.layout.activity_main);
+/*
+        // Create Retrofit instance
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        AiTextDetectionApi api = retrofit.create(AiTextDetectionApi.class);
+        // Create HuggingFace API service
+        HuggingFaceApi api = retrofit.create(HuggingFaceApi.class);
 
-        analyzeButton.setOnClickListener(view -> {
-            String inputText = textInput.getText().toString().trim();
-            if (!inputText.isEmpty()) {
-                analyzeText(api, inputText);
-            }
-        });
+        // Input text to analyze
+        String textToAnalyze = "Snowfall can have a significant impact on human activities.";
 
-    }
-    private void analyzeText(AiTextDetectionApi api, String inputText) {
-        // Call the API
-        Call<DetectionResponse> call = api.detectAiText(inputText);
-        call.enqueue(new Callback<DetectionResponse>() {
+        // Prepare the input data
+        InputData inputData = new InputData(textToAnalyze);
+
+        // Make the API call
+        Call<HuggingFaceResponse> call = api.detectOpenAIContent(inputData);
+        call.enqueue(new Callback<HuggingFaceResponse>() {
             @Override
-            public void onResponse(Call<DetectionResponse> call, Response<DetectionResponse> response) {
+            public void onResponse(Call<HuggingFaceResponse> call, Response<HuggingFaceResponse> response) {
                 if (response.isSuccessful()) {
-                    boolean isAiGenerated = response.body().isAiGenerated();
-                    if (isAiGenerated) {
-                        resultText.setText("The text is AI-generated.");
-                    } else {
-                        resultText.setText("The text is human-written.");
+                    HuggingFaceResponse huggingFaceResponse = response.body();
+                    if (huggingFaceResponse != null && !huggingFaceResponse.getLabel().isEmpty()) {
+                        Log.d(TAG, "Response: " + huggingFaceResponse.getLabel().get(0));
                     }
                 } else {
-                    resultText.setText("Error: Unable to analyze text.");
+                    Log.e(TAG, "Error: " + response.message());
                 }
             }
 
             @Override
-            public void onFailure(Call<DetectionResponse> call, Throwable t) {
-                resultText.setText("Failed to connect to the API.");
+            public void onFailure(Call<HuggingFaceResponse> call, Throwable t) {
+                Log.e(TAG, "Request failed", t);
             }
-        });
+        });*/
     }
 }
